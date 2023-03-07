@@ -39,7 +39,7 @@ class dst {
   private:
     std::unique_ptr<TFile> mFile;
     std::unique_ptr<TTree> mTree;
-    std::unique_ptr<TClonesArray> mEvents;
+    TClonesArray *mEvents {nullptr};
     IO mIO;
     int mN {0};
 };

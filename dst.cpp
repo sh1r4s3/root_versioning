@@ -16,18 +16,21 @@ dst::dst(const std::string path, IO io)
 
   if (io == IO::write) {
     mTree.reset(new TTree("dst", "dst"));
-    mEvents.reset(new TClonesArray("teletubbies", 1 << 10));
-    mTree->Branch("teletubbies", mEvents.get(), 1 << 20);
+    mEvents = new TClonesArray("teletubbies", 1 << 10);
+    mTree->Branch("teletubbies", mEvents, 1 << 20);
   }
 }
 
 dst::~dst() {
-  if (mIO == IO::write) mTree->Write();
+  if (mIO == IO::write) {
+    mTree->Write();
+    delete mEvents;
+  }
 }
 
 void dst::generate() {
   if (mIO != IO::write) return;
 
-  new(mEvents.get()->operator[](mN++)) teletubbies();
+  new(mEvents->operator[](mN++)) teletubbies();
   mTree->Fill();
 }
