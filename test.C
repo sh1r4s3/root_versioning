@@ -15,6 +15,8 @@ void save() {
 }
 
 void load() {
+  dst d("test.root", dst::IO::read);
+  d.printDstVersion();
 }
 
 void test() {

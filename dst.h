@@ -36,6 +36,7 @@ class dst {
     dst(const std::string path, IO io);
     ~dst();
     void generate();
+    void printDstVersion();
   private:
     std::unique_ptr<TFile> mFile;
     std::unique_ptr<TTree> mTree;

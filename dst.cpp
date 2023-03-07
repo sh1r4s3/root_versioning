@@ -18,6 +18,9 @@ dst::dst(const std::string path, IO io)
     mTree.reset(new TTree("dst", "dst"));
     mEvents = new TClonesArray("teletubbies", 1 << 10);
     mTree->Branch("teletubbies", mEvents, 1 << 20);
+  } else if (io == IO::read) {
+    mTree.reset((TTree *)mFile->Get("dst"));
+    mTree->SetBranchAddress("teletubbies", &mEvents);
   }
 }
 
@@ -33,4 +36,10 @@ void dst::generate() {
 
   new(mEvents->operator[](mN++)) teletubbies();
   mTree->Fill();
+}
+
+void dst::printDstVersion() {
+  mTree->GetEntry(1);
+  auto *ptr = (teletubbies *)(mEvents->operator[](0));
+  std::cout << ptr->Class_Version() << std::endl;
 }
